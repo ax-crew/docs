@@ -112,7 +112,7 @@ await crew.addAllAgents();
 
 ## Next Steps
 
-- Learn how to [configure agents](/guides/agent-configuration/) in detail
-- Explore [creating custom functions](/guides/creating-functions/) to enhance your agents
-- See how to manage [state across agents](/guides/state-management/) in a crew
+- Learn how to [configure agents](/core-concepts/agent-configuration/) in detail
+- Explore [creating custom functions](/core-concepts/creating-functions/) to enhance your agents
+- See how to manage [state across agents](/core-concepts/state-management/) in a crew
 - Check out the [examples](https://github.com/amitdeshmukh/ax-crew/tree/main/examples) for more complex use cases 
