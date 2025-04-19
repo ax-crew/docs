@@ -1,0 +1,69 @@
+---
+title: AxCrew Documentation
+description: A framework for building and managing crews of AI agents with AxLLM
+template: splash
+hero:
+  tagline: Build powerful multi-agent systems with ease
+  image:
+    file: ../../assets/houston.webp
+  actions:
+    - text: Get Started
+      link: /guides/getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/amitdeshmukh/ax-crew
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## AxCrew - AI Agent Teams
+
+<CardGrid stagger>
+	<a href="/guides/agent-configuration/" style="text-decoration: none; color: inherit;">
+		<Card title="Simple Configuration" icon="setting">
+			Define your agent crews using simple JSON configuration files.
+		</Card>
+	</a>
+	<a href="/guides/state-management/" style="text-decoration: none; color: inherit;">
+		<Card title="State Management" icon="random">
+			Share state across agents in a crew for coordinated actions.
+		</Card>
+	</a>
+	<a href="/guides/creating-functions/" style="text-decoration: none; color: inherit;">
+		<Card title="Custom Functions" icon="puzzle">
+			Enhance your agents with custom functions to interact with external systems.
+		</Card>
+	</a>
+	<a href="/guides/cost-tracking/" style="text-decoration: none; color: inherit;">
+		<Card title="Cost Tracking" icon="chart">
+			Monitor API usage costs across individual agents and entire crews.
+		</Card>
+	</a>
+</CardGrid>
+
+## Get Started
+
+<CardGrid>
+	<a href="/guides/getting-started/" style="text-decoration: none; color: inherit;">
+		<Card title="Installation Guide" icon="add-document">
+			Learn how to install and set up AxCrew in your project.
+		</Card>
+	</a>
+	<a href="/guides/agent-configuration/" style="text-decoration: none; color: inherit;">
+		<Card title="Agent Configuration" icon="setting">
+			Understand how to configure agents for your crew.
+		</Card>
+	</a>
+	<a href="/guides/creating-functions/" style="text-decoration: none; color: inherit;">
+		<Card title="Creating Functions" icon="pencil">
+			Build custom functions to extend your agents' capabilities.
+		</Card>
+	</a>
+	<a href="/reference/axcrew-class/" style="text-decoration: none; color: inherit;">
+		<Card title="API Reference" icon="open-book">
+			Explore the complete API reference documentation.
+		</Card>
+	</a>
+</CardGrid>
