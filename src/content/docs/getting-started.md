@@ -47,14 +47,14 @@ import { AxCrew } from '@amitdeshmukh/ax-crew';
 const config = {
   crew: [
     {
-      name: "Planner",
-      description: "Creates a plan to complete a task",
-      signature: "task:string \"a task to be completed\" -> plan:string \"a plan to execute the task\"",
-      provider: "google-gemini",
-      providerKeyName: "GEMINI_API_KEY",
+      name: "Manager",
+      description: "Completes a task or responds to a question",
+      signature: "task:string \"task or question from the user\" -> reply:string \"detailed response addressing the user's task\"",
+      provider: "openai",
+      providerKeyName: "OPENAI_API_KEY", 
       ai: {
-        model: "gemini-1.5-pro",
-        temperature: 0
+        model: "gpt-4o-mini",
+        temperature: 0.7
       }
     }
   ]
@@ -67,11 +67,11 @@ const crew = new AxCrew(config);
 await crew.addAllAgents();
 
 // Get the Planner agent
-const planner = crew.agents.get("Planner");
+const manager = crew.agents.get("Manager");
 
 // Use the agent
-const response = await planner.forward({ task: "Create a plan for building a website" });
-console.log(response.plan);
+const { reply } = await manager.forward({ task: "Create a plan for building a website" });
+console.log(reply);
 ```
 
 ## Using a Configuration File
@@ -83,14 +83,14 @@ For larger projects, you might prefer to keep your configuration in a separate J
 {
   "crew": [
     {
-      "name": "Planner",
-      "description": "Creates a plan to complete a task",
-      "signature": "task:string \"a task to be completed\" -> plan:string \"a plan to execute the task\"",
-      "provider": "google-gemini",
-      "providerKeyName": "GEMINI_API_KEY",
+      "name": "Manager",
+      "description": "Completes a task or responds to a question",
+      "signature": "task:string \"task or question from the user\" -> reply:string \"detailed response addressing the user's task\"",
+      "provider": "openai",
+      "providerKeyName": "OPENAI_API_KEY",
       "ai": {
-        "model": "gemini-1.5-pro",
-        "temperature": 0
+        "model": "gpt-4o-mini",
+        "temperature": 0.7
       }
     }
   ]
@@ -113,6 +113,8 @@ await crew.addAllAgents();
 ## Next Steps
 
 - Learn how to [configure agents](/core-concepts/agent-configuration/) in detail
+- Learn more about [Crew Configuration](/core-concepts/crew-configuration/)
+- Integrate [MCP Servers](/advanced-features/mcp-integration/)
 - Explore [creating custom functions](/core-concepts/creating-functions/) to enhance your agents
 - See how to manage [state across agents](/core-concepts/state-management/) in a crew
-- Check out the [examples](https://github.com/amitdeshmukh/ax-crew/tree/main/examples) for more complex use cases 
+- Check out the [examples](https://github.com/amitdeshmukh/ax-crew/tree/main/examples) for more use cases 

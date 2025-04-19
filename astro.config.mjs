@@ -6,7 +6,8 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
 	integrations: [
 		starlight({
-			title: 'AxCrew Docs',
+			title: 'AxCrew',
+			description: 'A framework for building and managing crews of AI agents with AxLLM',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/amitdeshmukh/ax-crew' }],
 			sidebar: [
 				{
