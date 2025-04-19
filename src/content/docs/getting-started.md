@@ -3,6 +3,10 @@ title: Getting Started with AxCrew
 description: Learn how to install and set up AxCrew in your project
 ---
 
+## What is AxCrew?
+
+AxCrew is a framework for building and managing **crews of AI agents**. It is built on top of [AxLLM](https://axllm.dev), a powerful typescript framework for building and managing LLM agents.
+
 ## Installation
 
 Install the AxCrew package using npm:
