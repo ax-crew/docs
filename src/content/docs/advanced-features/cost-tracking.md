@@ -138,7 +138,7 @@ This will reset the accumulated costs for all agents in the crew.
 
 ## Cost Tracking with Multiple Sessions
 
-For applications that need to track costs across multiple sessions or for different users, you can combine cost tracking with state management:
+For applications that need to track costs across multiple sessions or for different users, you can combine cost tracking with [state management](/core-concepts/state-management):
 
 ```typescript
 import { AxCrew, AxCrewFunctions } from '@amitdeshmukh/ax-crew';
@@ -230,86 +230,6 @@ async function runWithinBudget() {
 runWithinBudget();
 ```
 
-## Cost Tracking with Streaming
-
-Cost tracking works seamlessly with streaming responses:
-
-```typescript
-import { AxCrew } from '@amitdeshmukh/ax-crew';
-
-const crew = new AxCrew('./agentConfig.json');
-await crew.addAgentsToCrew(['Writer']);
-
-const writer = crew.agents.get('Writer');
-
-// Use streaming
-console.log("Generating content...");
-await writer.forward(
-  { topic: "Artificial Intelligence" },
-  {
-    onStream: (chunk) => {
-      process.stdout.write(chunk);
-    }
-  }
-);
-console.log("\n\nGeneration complete.");
-
-// Get accurate cost information even with streaming
-const cost = writer.getLastUsageCost();
-console.log(`\nTokens used: ${cost.tokenMetrics.totalTokens}`);
-console.log(`Cost: $${cost.totalCost}`);
-```
-
-## Model-specific Pricing
-
-AxCrew automatically handles different pricing tiers for various AI models:
-
-```typescript
-// Different models have different pricing
-const openaiAgent = crew.agents.get('OpenAIAgent'); // Using GPT-4
-const claudeAgent = crew.agents.get('ClaudeAgent'); // Using Claude 3 Opus
-const geminiAgent = crew.agents.get('GeminiAgent'); // Using Gemini 1.5 Pro
-
-// Run each agent
-await openaiAgent.forward({ prompt: "Explain quantum computing" });
-await claudeAgent.forward({ prompt: "Explain quantum computing" });
-await geminiAgent.forward({ prompt: "Explain quantum computing" });
-
-// Compare costs
-console.log('OpenAI cost:', openaiAgent.getLastUsageCost().totalCost);
-console.log('Claude cost:', claudeAgent.getLastUsageCost().totalCost);
-console.log('Gemini cost:', geminiAgent.getLastUsageCost().totalCost);
-```
-
-## Exporting Cost Reports
-
-You can export cost data for external analysis or reporting:
-
-```typescript
-import { AxCrew } from '@amitdeshmukh/ax-crew';
-import { writeFileSync } from 'fs';
-
-const crew = new AxCrew('./agentConfig.json');
-await crew.addAllAgents();
-
-// Run various operations
-// ... (agent operations)
-
-// Generate cost report
-const costReport = {
-  timestamp: new Date().toISOString(),
-  costs: crew.getAggregatedCosts(),
-  sessionId: 'session-123'
-};
-
-// Export as JSON
-writeFileSync(
-  `cost-report-${new Date().toISOString().split('T')[0]}.json`, 
-  JSON.stringify(costReport, null, 2)
-);
-
-console.log(`Cost report exported. Total cost: $${costReport.costs.totalCost}`);
-```
 
 ## Best Practices
 
@@ -318,4 +238,3 @@ console.log(`Cost report exported. Total cost: $${costReport.costs.totalCost}`);
 3. **Cost Attribution**: Use state to track costs per user or per session
 4. **Logging**: Log cost information alongside other application metrics
 5. **Provider Selection**: Choose models based on the cost-performance tradeoff for your use case
-6. **Optimization**: Optimize prompts to reduce token usage and costs 

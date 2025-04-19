@@ -20,7 +20,8 @@ export default defineConfig({
 					label: 'Core Concepts',
 					items: [
 						{ label: 'Agent Configuration', link: '/core-concepts/agent-configuration/' },
-						{ label: 'Creating Custom Functions', link: '/core-concepts/creating-functions/' },
+						{ label: 'Crew Configuration', link: '/core-concepts/crew-configuration/' },
+						{ label: 'Functions (aka Tools)', link: '/core-concepts/creating-functions/' },
 						{ label: 'State Management', link: '/core-concepts/state-management/' },
 						{ label: 'Working with Examples', link: '/core-concepts/working-with-examples/' },
 					],

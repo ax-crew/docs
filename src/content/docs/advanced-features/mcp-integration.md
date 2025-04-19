@@ -1,11 +1,9 @@
 ---
 title: MCP Integration
-description: Learn how to use the Model Context Protocol (MCP) with AxCrew
+description: Integrate MCP (Model Context Protocol) servers with AxCrew to connect your agents to external APIs and services.
 ---
 
-Learn how to use the Model Context Protocol (MCP) with AxCrew to connect your agents to external APIs and services.
-
----
+Integrate MCP (Model Context Protocol) servers with AxCrew to connect your agents to external APIs and services.
 
 ## What is MCP?
 

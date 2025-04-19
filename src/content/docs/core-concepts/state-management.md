@@ -163,95 +163,151 @@ const managerResponse = await manager.forward({
 5. **Scoping**: Use prefixes for state keys to avoid collisions between different subsystems
 6. **Type Safety**: Use TypeScript to ensure type safety when accessing state values
 
-Example of best practices:
-
-```typescript
-// Using prefixes for state keys to avoid collisions
-planner.state.set('planner.currentPlan', planData);
-calculator.state.set('calculator.result', 42);
-
-// Checking if state exists before using it
-const plan = manager.state.get('planner.currentPlan');
-if (plan) {
-  // Use the plan
-} else {
-  // Handle missing plan
-}
-
-// Cleaning up state when done
-manager.state.set('planner.currentPlan', null);
-
-// Using TypeScript for type safety
-interface UserData {
-  id: number;
-  name: string;
-  preferences: {
-    theme: string;
-    notifications: boolean;
-  };
-}
-
-crew.state.set('user', userData as UserData);
-const user = crew.state.get('user') as UserData;
-```
-
 ## Example Workflow with State
 
-Here's a complete example of a workflow using state:
+Here's a complete example of a workflow using state management to respond to a user query:
 
 ```typescript
 import { AxCrew, AxCrewFunctions } from '@amitdeshmukh/ax-crew';
 
 // Initialize crew
 const crew = new AxCrew('./agentConfig.json', AxCrewFunctions);
-await crew.addAgentsToCrew(['Planner', 'Calculator', 'Manager']);
+await crew.addAgentsToCrew(['UserProfileAgent', 'HistoryAgent', 'SupportAgent']);
 
 // Get agent instances
-const planner = crew.agents.get('Planner');
-const calculator = crew.agents.get('Calculator');
-const manager = crew.agents.get('Manager');
+const profileAgent = crew.agents.get('UserProfileAgent');
+const historyAgent = crew.agents.get('HistoryAgent');
+const supportAgent = crew.agents.get('SupportAgent');
 
-// User query
-const userQuery = "Calculate the square root of the number of days between now and Christmas";
+// User query and identification
+const userId = "user_12345";
+const userQuery = "I'm having trouble with my recent order";
 
-// Initialize workflow state
-crew.state.set('workflow.started', new Date().toISOString());
-crew.state.set('workflow.userQuery', userQuery);
+// Initialize workflow with user context - userId is set once in state
+// and will be implicitly accessed by all functions that need it
+crew.state.set('user.id', userId);
+crew.state.set('session.started', new Date().toISOString());
+crew.state.set('session.currentQuery', userQuery);
 
-// Step 1: Create a plan
-const planResponse = await planner.forward({ task: userQuery });
-crew.state.set('workflow.plan', planResponse.plan);
+// Step 1: Retrieve user profile information
+// Note: userId is not passed explicitly, functions will read it from state
+const profileResponse = await profileAgent.forward({ 
+  action: 'getUserProfile' 
+});
+crew.state.set('user.profile', profileResponse.profile);
 
-// Step 2: Use the Calculator agent for date calculation
-// Calculate days until Christmas
-const today = new Date();
-const christmas = new Date(today.getFullYear(), 11, 25); // Month is 0-indexed (11 = December)
-if (today > christmas) {
-  christmas.setFullYear(christmas.getFullYear() + 1);
-}
-const daysUntilChristmas = Math.ceil((christmas.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-crew.state.set('workflow.daysUntilChristmas', daysUntilChristmas);
+// User profile is now available in state for all agents
+const userProfile = crew.state.get('user.profile');
+console.log(`Handling request for ${userProfile.name} (${userProfile.email})`);
 
-// Step 3: Calculate square root
-const calcResponse = await calculator.forward({ equation: `sqrt(${daysUntilChristmas})` });
-crew.state.set('workflow.squareRoot', calcResponse.result);
+// Step 2: Fetch conversation history
+// Again, userId is accessed from state by underlying functions
+const historyResponse = await historyAgent.forward({ 
+  action: 'getConversationHistory',
+  limit: 5  // Get last 5 conversations
+});
+crew.state.set('user.conversationHistory', historyResponse.conversations);
 
-// Step 4: Generate final answer using all collected data
-const managerResponse = await manager.forward({ 
-  question: userQuery,
-  plan: crew.state.get('workflow.plan'),
-  days: crew.state.get('workflow.daysUntilChristmas'),
-  result: crew.state.get('workflow.squareRoot')
+// Step 3: Retrieve order information (assuming it's mentioned in query)
+const orderInfoResponse = await supportAgent.forward({
+  action: 'getOrderInfo'
+  // userId is accessed from state, not passed explicitly
+});
+crew.state.set('user.recentOrders', orderInfoResponse.orders);
+
+// Step 4: Generate response with context from all previous steps
+const supportResponse = await supportAgent.forward({
+  action: 'generateResponse',
+  query: userQuery
+  // No need to pass state values explicitly - they're in state
 });
 
-// Store final answer in state
-crew.state.set('workflow.finalAnswer', managerResponse.answer);
-crew.state.set('workflow.completed', new Date().toISOString());
+// Store response in state
+crew.state.set('session.response', supportResponse.message);
+crew.state.set('session.completed', new Date().toISOString());
+
+// Log interaction to history
+const interaction = {
+  timestamp: new Date().toISOString(),
+  query: userQuery,
+  response: supportResponse.message,
+  sentiment: supportResponse.sentiment
+};
+crew.state.set('session.interaction', interaction);
+
+// Store this interaction in history
+await historyAgent.forward({
+  action: 'logInteraction',
+  interaction: crew.state.get('session.interaction')
+  // userId is accessed from state by the function
+});
+
+// Example mock data that would be used in this workflow:
+/*
+UserProfileAgent would return:
+{
+  profile: {
+    id: "user_12345",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    accountType: "premium",
+    signupDate: "2022-03-15T08:30:00Z",
+    preferences: {
+      communicationChannel: "email",
+      newsletter: true
+    }
+  }
+}
+
+HistoryAgent would return:
+{
+  conversations: [
+    {
+      timestamp: "2023-06-10T14:22:00Z",
+      query: "How do I change my shipping address?",
+      response: "You can update your shipping address in your account settings...",
+      sentiment: "neutral"
+    },
+    {
+      timestamp: "2023-06-15T09:45:00Z",
+      query: "My order #ABC123 hasn't arrived yet",
+      response: "I see your order #ABC123 shipped on June 12th and is expected to arrive...",
+      sentiment: "concerned"
+    }
+    // Additional conversation history...
+  ]
+}
+
+SupportAgent (getOrderInfo) would return:
+{
+  orders: [
+    {
+      orderId: "ORD-789456",
+      date: "2023-06-18T11:30:00Z",
+      status: "shipped",
+      items: [
+        { productId: "PROD-001", name: "Wireless Headphones", quantity: 1, price: 89.99 }
+      ],
+      shippingAddress: "123 Main St, Anytown, AT 12345",
+      trackingNumber: "TRK123456789",
+      estimatedDelivery: "2023-06-22"
+    }
+  ]
+}
+
+SupportAgent (generateResponse) would return:
+{
+  message: "Hello Jane, I see you're inquiring about your recent order of Wireless Headphones (ORD-789456). According to our records, your order was shipped on June 18th and is expected to arrive by June 22nd. The tracking number is TRK123456789. Would you like me to provide more details about the shipment?",
+  sentiment: "helpful",
+  suggestedActions: ["track_order", "modify_order", "cancel_order"]
+}
+*/
 
 // Print result
-console.log(`Question: ${userQuery}`);
-console.log(`Plan: ${crew.state.get('workflow.plan')}`);
-console.log(`Days until Christmas: ${crew.state.get('workflow.daysUntilChristmas')}`);
-console.log(`Square root result: ${crew.state.get('workflow.squareRoot')}`);
-console.log(`Final answer: ${crew.state.get('workflow.finalAnswer')}`);
+console.log(`Query: ${userQuery}`);
+console.log(`Response: ${crew.state.get('session.response')}`);
+console.log(`Session duration: ${
+  (new Date(crew.state.get('session.completed')).getTime() - 
+   new Date(crew.state.get('session.started')).getTime()) / 1000
+} seconds`);
 ``` 
