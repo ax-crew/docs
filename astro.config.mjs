@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+import umami from "@yeskunall/astro-umami";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://axcrew.dev",
@@ -91,6 +93,9 @@ export default defineConfig({
           ],
         },
       ],
+    }),
+    umami({
+      id: "11bae7ee-ea6d-4b0c-a8e3-cdc393be0c30",
     }),
   ],
 });
