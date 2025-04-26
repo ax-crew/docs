@@ -1,11 +1,7 @@
 ---
-title: Simple Examples
+title: Use Cases
 description: Examples of how to use AxCrew in different scenarios
 ---
-
-# Simple Examples
-
-This page showcases various examples of how to use AxCrew in different scenarios.
 
 ## Basic Researcher-Writer
 

@@ -158,15 +158,6 @@ console.log("Answer:", answer);
 
 ---
 
-## Best Practices
-
-- **API Keys:** Always use the `env` field to pass API keys, never hardcode them.
-- **Multiple Servers:** You can specify multiple MCP servers in the `mcpServers` object.
-- **Debugging:** Use `"options": { "debug": true }` for verbose logs.
-- **Security:** Limit what your MCP server can access, validate all inputs, and handle errors gracefully.
-
----
-
 ## Example: Using Multiple MCP Servers
 
 ```jsonc
@@ -188,7 +179,17 @@ console.log("Answer:", answer);
 
 ---
 
+## Best Practices
+
+- **API Keys:** Always use the `env` field to pass API keys, never hardcode them.
+- **Multiple Servers:** You can specify multiple MCP servers in the `mcpServers` object.
+- **Debugging:** Use `"options": { "debug": true }` for verbose logs.
+- **Security:** Limit what your MCP server can access, validate all inputs, and handle errors gracefully.
+
+
+---
+
 ## Further Reading
 
-- See the [examples directory](https://github.com/amitdeshmukh/ax-crew/tree/main/examples) for more MCP agent examples.
+- See the [curated tools](/curated-tools/) directory for a curated list of MCP servers and tools.
 - See the [README](https://github.com/amitdeshmukh/ax-crew/blob/main/README.md) for general AxCrew usage. 

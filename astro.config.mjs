@@ -81,7 +81,11 @@ export default defineConfig({
         },
         {
           label: "Examples",
-          items: [{ label: "Example Use Cases", link: "/examples/examples/" }],
+          items: [{ label: "Use Cases", link: "/examples/examples/" }],
+        },
+        {
+          label: "Curated Tools",
+          items: [{ label: "MCP Servers", link: "/curated-tools/#mcp-servers/" }, { label: "AxFunctions", link: "/curated-tools/#axfunctions/" }],
         },
         {
           label: "API Reference",
