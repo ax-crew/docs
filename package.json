@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@astrojs/starlight": "^0.34.0",
+    "@catppuccin/starlight": "^1.0.0",
     "@yeskunall/astro-umami": "^0.0.4",
     "astro": "^5.6.1",
     "sharp": "^0.32.5"

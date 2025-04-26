@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import catppuccin from "@catppuccin/starlight";
 
 import umami from "@yeskunall/astro-umami";
 
@@ -92,6 +93,12 @@ export default defineConfig({
             },
           ],
         },
+      ],
+      plugins: [
+        catppuccin({
+          light: { flavor: "latte", accent: "mauve" },
+          dark: { flavor: "frappe", accent: "mauve" },
+        }),
       ],
     }),
     umami({

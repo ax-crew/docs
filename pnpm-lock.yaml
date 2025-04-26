@@ -11,6 +11,9 @@ importers:
       '@astrojs/starlight':
         specifier: ^0.34.0
         version: 0.34.0(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3))
+      '@catppuccin/starlight':
+        specifier: ^1.0.0
+        version: 1.0.0(@astrojs/starlight@0.34.0(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3)))(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3))
       '@yeskunall/astro-umami':
         specifier: ^0.0.4
         version: 0.0.4(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3))
@@ -77,6 +80,12 @@ packages:
 
   '@capsizecss/unpack@2.4.0':
     resolution: {integrity: sha512-GrSU71meACqcmIUxPYOJvGKF0yryjN/L1aCuE9DViCTJI7bfkjgYDPD1zbNDcINJwSSP6UaBZY9GAbYDO7re0Q==}
+
+  '@catppuccin/starlight@1.0.0':
+    resolution: {integrity: sha512-eUs+bE+JHvJWyr7E0j0UF4QEhI2OC064anE30X/pVStTXybg/BfsbKiH3k1egvluLgiyK86Zg86+Sypv8xGGVA==}
+    peerDependencies:
+      '@astrojs/starlight': ^0.32.0
+      astro: ^5.0.0
 
   '@ctrl/tinycolor@4.1.0':
     resolution: {integrity: sha512-WyOx8cJQ+FQus4Mm4uPIZA64gbk3Wxh0so5Lcii0aJifqwoVOlfFtorjLE0Hen4OYyHZMXDWqMmaQemBhgxFRQ==}
@@ -2091,6 +2100,11 @@ snapshots:
       fontkit: 2.0.4
     transitivePeerDependencies:
       - encoding
+
+  '@catppuccin/starlight@1.0.0(@astrojs/starlight@0.34.0(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3)))(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3))':
+    dependencies:
+      '@astrojs/starlight': 0.34.0(astro@5.7.4(rollup@4.40.0)(typescript@5.8.3))
+      astro: 5.7.4(rollup@4.40.0)(typescript@5.8.3)
 
   '@ctrl/tinycolor@4.1.0': {}
 
